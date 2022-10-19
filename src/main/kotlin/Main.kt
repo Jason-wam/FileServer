@@ -36,6 +36,7 @@ fun main(args: Array<String>) {
     }
 
     val ipv4 = NetworkUtil.getLocalIPAddress()
+    val pin = properties.getProperty("server.pin", "")
     val port = properties.getProperty("server.port", "8080").toInt()
     LoggerFactory.getLogger("Server").info("port: $port ..")
 
@@ -67,8 +68,18 @@ fun main(args: Array<String>) {
                 LoggerFactory.getLogger("Root").info(context.request.uri)
                 LoggerFactory.getLogger("Root").info(context.request.userAgent())
 
+                if (pin.isNotBlank()) {
+                    if (call.parameters["pin"] != pin) {
+                        call.respondJson {
+                            put("code", HttpResponseStatus.BAD_REQUEST.code())
+                            put("message", "Pin invalid!")
+                        }
+                        return@get
+                    }
+                }
+
                 call.respondJson {
-                    put("code", 200)
+                    put("code", HttpResponseStatus.OK.code())
                     put("path", "/")
                     put("list", JSONArray().apply {
                         list.forEach { file ->
@@ -94,6 +105,15 @@ fun main(args: Array<String>) {
                 LoggerFactory.getLogger("Children").info("***GET***")
                 LoggerFactory.getLogger("Children").info(context.request.uri)
                 LoggerFactory.getLogger("Children").info(context.request.userAgent())
+                if (pin.isNotBlank()) {
+                    if (call.parameters["pin"] != pin) {
+                        call.respondJson {
+                            put("code", HttpResponseStatus.BAD_REQUEST.code())
+                            put("message", "Pin invalid!")
+                        }
+                        return@get
+                    }
+                }
 
                 val path = call.parameters["path"]
                 if (path.isNullOrBlank()) {
@@ -159,6 +179,16 @@ fun main(args: Array<String>) {
                 LoggerFactory.getLogger("File").info(context.request.uri)
                 LoggerFactory.getLogger("File").info(context.request.userAgent())
 
+                if (pin.isNotBlank()) {
+                    if (call.parameters["pin"] != pin) {
+                        call.respondJson {
+                            put("code", HttpResponseStatus.BAD_REQUEST.code())
+                            put("message", "Pin invalid!")
+                        }
+                        return@get
+                    }
+                }
+
                 val path = call.parameters["path"]
                 if (path.isNullOrBlank()) {
                     LoggerFactory.getLogger("File").error("Path can't be null!")
@@ -195,6 +225,16 @@ fun main(args: Array<String>) {
                 LoggerFactory.getLogger("Upload").info("***UPLOAD***")
                 LoggerFactory.getLogger("Upload").info(context.request.uri)
                 LoggerFactory.getLogger("Upload").info(context.request.userAgent())
+
+                if (pin.isNotBlank()) {
+                    if (call.parameters["pin"] != pin) {
+                        call.respondJson {
+                            put("code", HttpResponseStatus.BAD_REQUEST.code())
+                            put("message", "Pin invalid!")
+                        }
+                        return@post
+                    }
+                }
 
                 val path = call.parameters["path"]
                 if (path.isNullOrBlank()) {
