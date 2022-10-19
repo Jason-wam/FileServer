@@ -1,0 +1,56 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="FileServer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FileServer_jar</output-path>
+    <root id="archive" name="FileServer.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="FileServer.main" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.eclipse.jetty.alpn/alpn-api/1.1.3.v20160715/a1bf3a937f91b4c953acd13e8c9552347adc2198/alpn-api-1.1.3.v20160715.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-transport/4.1.78.Final/b1639d431e43622d6cbfdd45c30d3fb810fa9101/netty-transport-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.json/json/20220320/6df2c050972619466f6dcef7654ef9bcc01dfd0/json-20220320.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-kqueue/4.1.78.Final/5536de8030ef84507504b352e54c298b9db361c9/netty-transport-classes-kqueue-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-io-jvm/2.1.0/ccd958db554677538c21515a0acd62862bb6b2a0/ktor-io-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.2.11/4741689214e9d1e8408b206506cbe76d1c6a7d60/logback-classic-1.2.11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-host-common-jvm/2.1.0/4f8a7ed4d46d72f78d7eb806d31863e7e6a99626/ktor-server-host-common-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-cio-jvm/2.1.0/81fc128a33b4cdf20ec48462d165d071f366397e/ktor-http-cio-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.7.10/bac80c520d0a9e3f3673bc2658c6ed02ef45a76a/kotlin-stdlib-common-1.7.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-handler/4.1.78.Final/7e902b6018378bb700ec9364b1d0fba6eefd99fd/netty-handler-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-buffer/4.1.78.Final/6c0c2d805a2c8ea30223677d8219235f9ec14c38/netty-buffer-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-events-jvm/2.1.0/ef58c3c3d012ab115011af1e2f2afc357433c220/ktor-events-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-epoll/4.1.78.Final/dcb28ed02abf7bf02aa8dc9bf05f58bedcb12e9a/netty-transport-native-epoll-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.36/6c62681a2f655b49963a5983b8b0950a6120ae14/slf4j-api-1.7.36.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-codec-http2/4.1.78.Final/9a4e44bebe5979b59c9bf4cd879e65c4c52bf869/netty-codec-http2-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-utils-jvm/2.1.0/1b3ca53f817d054ba00c8a3e92a50ba655428c71/ktor-utils-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-cio-jvm/2.1.0/c1c9e03308de6ba4a136f6524bfead85f1a749c9/ktor-client-cio-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-serialization-jvm/2.1.0/e1d36c91035d2eddd1f202411248a4b6944ea387/ktor-serialization-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-transport-classes-epoll/4.1.78.Final/2151893a521c6362858071053fddbd270c1f20bd/netty-transport-classes-epoll-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-common/4.1.78.Final/d6f560098050f88ba11750aa856edd955e4a7707/netty-common-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-http-jvm/2.1.0/eff494019c2c1a0e9db6e13533d241ecd6bbc822/ktor-http-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-reflect/1.7.0/e660b0079fdaf744dc9cc7f6f3aa3c761ec839b0/kotlin-reflect-1.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-network-jvm/2.1.0/e1a24aa8ef91988a7d33ba95b51f21b3cfc334a4/ktor-network-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-client-core-jvm/2.1.0/9f817ae55e463f27d885ef051ff88e4c2acea7da/ktor-client-core-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/com.typesafe/config/1.4.2/4c40a633e7994cfb0354244efb6d03fcb11c3ecf/config-1.4.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-unix-common/4.1.78.Final/62c64e182a11e31ad80e68a94f0b02b45344df23/netty-transport-native-unix-common-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-codec/4.1.78.Final/e8486c8923fc0914df4562a8e0923462e885f88a/netty-codec-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.7.10/1ef73fee66f45d52c67e2aca12fd945dbe0659bf/kotlin-stdlib-jdk7-1.7.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.6.4/2c997cd1c0ef33f3e751d3831929aeff1390cb30/kotlinx-coroutines-core-jvm-1.6.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-netty-jvm/2.1.0/dfa95e58d34d851bb80df97eef7edebcf58fa07c/ktor-server-netty-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-resolver/4.1.78.Final/691170d70a979757d50f60e16121ced5f411a9b8/netty-resolver-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-jdk8/1.6.4/5bc4b0bf6fd90fc190fd2f17e919c74c6274cb71/kotlinx-coroutines-jdk8-1.6.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-transport-native-kqueue/4.1.78.Final/7a48e5f1cce660dd4fb5a32d9cf68d731f969555/netty-transport-native-kqueue-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.7.10/d2abf9e77736acc4450dc4a3f707fa2c10f5099d/kotlin-stdlib-1.7.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.2.11/a01230df5ca5c34540cdaa3ad5efb012f1f1f792/logback-core-1.2.11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-slf4j/1.6.4/9369fcabacb66a55ca3b7939b72bb0b62af112ce/kotlinx-coroutines-slf4j-1.6.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-websocket-serialization-jvm/2.1.0/d202979642d5091a18587b3f81269c0a9a8acc78/ktor-websocket-serialization-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.fusesource.jansi/jansi/2.4.0/321c614f85f1dea6bb08c1817c60d53b7f3552fd/jansi-2.4.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-websockets-jvm/2.1.0/17015d23235fd5e784230875e630f6bd1418fdf8/ktor-websockets-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-network-tls-jvm/2.1.0/5a3079cfe38ba6a62f452bbf87a216a6cd8c92cd/ktor-network-tls-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.ktor/ktor-server-core-jvm/2.1.0/48db9240b2424eaadebedf06cb4b8a23badd4870/ktor-server-core-jvm-2.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.7.10/d70d7d2c56371f7aa18f32e984e3e2e998fe9081/kotlin-stdlib-jdk8-1.7.10.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="E:/Gradle/caches/modules-2/files-2.1/io.netty/netty-codec-http/4.1.78.Final/b636591e973418479f2d08e881b12be61845aa6f/netty-codec-http-4.1.78.Final.jar" path-in-jar="/" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/resources" />
+    </root>
+  </artifact>
+</component>
