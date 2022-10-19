@@ -14,13 +14,15 @@ repositories {
 }
 
 dependencies {
-    val ktorVersion = "2.1.0"
+    val ktorVersion = "2.1.2"
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-compression-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-partial-content-jvm:$ktorVersion")
 
-    implementation("ch.qos.logback:logback-classic:1.2.11")
-    implementation("org.json:json:20220320")
+    implementation("ch.qos.logback:logback-classic:1.4.3")
+    implementation("org.json:json:20220924")
 }
 
 tasks.test {

@@ -1,7 +1,10 @@
+import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.compression.*
+import io.ktor.server.plugins.partialcontent.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -13,7 +16,7 @@ import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URLEncoder
-import java.util.Properties
+import java.util.*
 
 fun main(args: Array<String>) {
     val runDir = System.getProperty("user.dir")
@@ -34,7 +37,7 @@ fun main(args: Array<String>) {
 
     val ipv4 = NetworkUtil.getLocalIPAddress()
     val port = properties.getProperty("server.port", "8080").toInt()
-    LoggerFactory.getLogger("Server").info("Server port: $port ..")
+    LoggerFactory.getLogger("Server").info("port: $port ..")
 
     val list = ArrayList<File>()
     properties.getProperty("server.path").split(",").forEach {
@@ -42,9 +45,9 @@ fun main(args: Array<String>) {
             val file = File(it)
             if (file.exists()) {
                 list.add(File(it))
-                LoggerFactory.getLogger("Server").info("Server file: $it")
+                LoggerFactory.getLogger("Server").info("file: $it")
             } else {
-                LoggerFactory.getLogger("Server").error("Server file: $it not found!")
+                LoggerFactory.getLogger("Server").error("file: $it not found!")
             }
         }
     }
@@ -52,6 +55,12 @@ fun main(args: Array<String>) {
     LoggerFactory.getLogger("Server").info("Server address: http://$ipv4:$port/")
 
     embeddedServer(Netty, port, "0.0.0.0") {
+        install(PartialContent)
+        install(Compression) {
+            default()
+            excludeContentType(ContentType.Video.Any)
+        }
+
         routing {
             get("/") {
                 LoggerFactory.getLogger("Root").info("***GET***")
@@ -221,7 +230,6 @@ fun main(args: Array<String>) {
                         LoggerFactory.getLogger("Upload").info("file: ${fileName.absolutePath}")
                     }
                 }
-
                 call.respondJson {
                     put("code", HttpResponseStatus.OK.code())
                     put("message", "${outFiles.size} files uploaded!")

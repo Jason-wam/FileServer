@@ -115,3 +115,19 @@
 2022-10-19 16:23:47.260 [main] INFO  - Autoreload is disabled because the development mode is off.
 2022-10-19 16:23:47.290 [main] INFO  - Application started in 0.071 seconds.
 2022-10-19 16:23:47.563 [DefaultDispatcher-worker-1] INFO  - Responding at http://0.0.0.0:8080
+2022-10-19 20:47:20.052 [main] INFO  - port: 8080 ..
+2022-10-19 20:47:20.060 [main] INFO  - file: D:/
+2022-10-19 20:47:20.060 [main] INFO  - file: E:/
+2022-10-19 20:47:20.060 [main] INFO  - Server address: http://192.168.0.5:8080/
+2022-10-19 20:47:20.141 [main] INFO  - Autoreload is disabled because the development mode is off.
+2022-10-19 20:47:20.200 [main] INFO  - Application started in 0.096 seconds.
+2022-10-19 20:47:20.451 [DefaultDispatcher-worker-1] INFO  - Responding at http://127.0.0.1:8080
+2022-10-19 20:47:31.830 [eventLoopGroupProxy-4-1] INFO  - ***GET***
+2022-10-19 20:47:31.831 [eventLoopGroupProxy-4-1] INFO  - /children?path=H%3A%5C
+2022-10-19 20:47:31.831 [eventLoopGroupProxy-4-1] INFO  - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36
+2022-10-19 20:47:35.347 [eventLoopGroupProxy-4-1] INFO  - ***GET***
+2022-10-19 20:47:35.348 [eventLoopGroupProxy-4-1] INFO  - /
+2022-10-19 20:47:35.348 [eventLoopGroupProxy-4-1] INFO  - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36
+2022-10-19 21:55:36.962 [eventLoopGroupProxy-4-4] INFO  - ***GET***
+2022-10-19 21:55:36.963 [eventLoopGroupProxy-4-4] INFO  - /
+2022-10-19 21:55:36.963 [eventLoopGroupProxy-4-4] INFO  - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36
