@@ -12,9 +12,3 @@ suspend fun ApplicationCall.respondJson(block: (JSONObject.() -> Unit)? = null) 
     block?.invoke(obj)
     respondText(obj.toString(2), ContentType.Application.Json, HttpStatusCode.OK)
 }
-
-suspend fun ApplicationCall.respondStream(file: File){
-    val stream = file.inputStream()
-    val contentType = ContentType.defaultForFilePath(file.absolutePath)
-
-}

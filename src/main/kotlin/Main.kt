@@ -10,13 +10,18 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.netty.handler.codec.http.HttpResponseStatus
 import org.jason.server.respondJson
+import org.jason.server.utils.MediaType
 import org.jason.server.utils.NetworkUtil
+import org.jason.server.utils.ThreadPool
+import org.jason.server.utils.toMd5String
 import org.json.JSONArray
 import org.json.JSONObject
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.net.URLEncoder
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.thread
 
 fun main(args: Array<String>) {
     val runDir = System.getProperty("user.dir")
@@ -40,6 +45,11 @@ fun main(args: Array<String>) {
     val port = properties.getProperty("server.port", "8080").toInt()
     LoggerFactory.getLogger("Server").info("port: $port ..")
 
+    val ffmpeg = properties.getProperty("ffmpeg", "")
+    if (ffmpeg.isNotBlank()) {
+        LoggerFactory.getLogger("Server").info("ffmpeg: $ffmpeg")
+    }
+
     val list = ArrayList<File>()
     properties.getProperty("server.path").split(",").forEach {
         if (it.isNotBlank()) {
@@ -51,6 +61,38 @@ fun main(args: Array<String>) {
                 LoggerFactory.getLogger("Server").error("file: $it not found!")
             }
         }
+    }
+
+    if (ffmpeg.isNotBlank()) {
+        thread {
+            fun File.getAllFiles(): List<File> {
+                return ArrayList<File>().apply {
+                    listFiles()?.forEach {
+                        if (it.isDirectory) {
+                            addAll(it.getAllFiles())
+                        } else {
+                            if (MediaType.isVideo(it)) {
+                                add(it)
+                            }
+                        }
+                    }
+                }
+            }
+
+            ThreadPool.instance("thumbnail").setThreads(5)
+            list.forEach {
+                if (it.isDirectory) {
+                    it.getAllFiles().forEach { file ->
+                        ThreadPool.instance("thumbnail").addTask {
+                            createThumbnail(ffmpeg, file)
+                        }
+                    }
+                } else {
+                    createThumbnail(ffmpeg, it)
+                }
+            }
+        }
+
     }
 
     LoggerFactory.getLogger("Server").info("Server address: http://$ipv4:$port/")
@@ -94,6 +136,11 @@ fun main(args: Array<String>) {
                                     put("url", "http://$ipv4:$port/children?path=" + URLEncoder.encode(file.absolutePath, "utf-8"))
                                 } else {
                                     put("url", "http://$ipv4:$port/file?path=" + URLEncoder.encode(file.absolutePath, "utf-8"))
+                                    if (MediaType.isVideo(file)) {
+                                        createThumbnail(ffmpeg, file)?.also {
+                                            put("thumbnail", "http://$ipv4:$port/file?path=" + URLEncoder.encode(it.absolutePath, "utf-8"))
+                                        }
+                                    }
                                 }
                             })
                         }
@@ -167,6 +214,12 @@ fun main(args: Array<String>) {
                                     put("url", "http://$ipv4:$port/children?path=" + URLEncoder.encode(it.absolutePath, "utf-8"))
                                 } else {
                                     put("url", "http://$ipv4:$port/file?path=" + URLEncoder.encode(it.absolutePath, "utf-8"))
+                                    if (MediaType.isVideo(it)) {
+                                        put("thumbnail", "http://$ipv4:$port/file?path=" + URLEncoder.encode(it.absolutePath, "utf-8"))
+                                        createThumbnail(ffmpeg, it)?.also {
+                                            put("thumbnail", "http://$ipv4:$port/file?path=" + URLEncoder.encode(it.absolutePath, "utf-8"))
+                                        }
+                                    }
                                 }
                             })
                         }
@@ -181,10 +234,7 @@ fun main(args: Array<String>) {
 
                 if (pin.isNotBlank()) {
                     if (call.parameters["pin"] != pin) {
-                        call.respondJson {
-                            put("code", HttpResponseStatus.BAD_REQUEST.code())
-                            put("message", "Pin invalid!")
-                        }
+                        call.respond(HttpStatusCode.BadRequest, "Pin invalid!")
                         return@get
                     }
                 }
@@ -192,29 +242,20 @@ fun main(args: Array<String>) {
                 val path = call.parameters["path"]
                 if (path.isNullOrBlank()) {
                     LoggerFactory.getLogger("File").error("Path can't be null!")
-                    call.respondJson {
-                        put("code", HttpResponseStatus.BAD_REQUEST.code())
-                        put("message", "Path can't be null!")
-                    }
+                    call.respond(HttpStatusCode.BadRequest, "Path can't be null!")
                     return@get
                 }
 
                 val file = File(path)
                 if (file.isDirectory) {
                     LoggerFactory.getLogger("File").error("${file.absolutePath} is directory!")
-                    call.respondJson {
-                        put("code", HttpResponseStatus.BAD_REQUEST.code())
-                        put("message", "This file is directory!")
-                    }
+                    call.respond(HttpStatusCode.BadRequest, "This file is directory!")
                     return@get
                 }
 
                 if (file.exists().not()) {
                     LoggerFactory.getLogger("File").error("${file.absolutePath} not found!")
-                    call.respondJson {
-                        put("code", HttpResponseStatus.NOT_FOUND.code())
-                        put("message", "File Not Found!")
-                    }
+                    call.respond(HttpStatusCode.NotFound, "File not found!")
                     return@get
                 }
                 call.response.header("Content-Disposition", "inline;filename=${URLEncoder.encode(file.name, "utf-8")}")
@@ -278,4 +319,49 @@ fun main(args: Array<String>) {
             }
         }
     }.start(true)
+}
+
+private fun createThumbnail(ffmpeg: String, file: File): File? {
+    if (ffmpeg.isNotBlank()) {
+        val runDir = System.getProperty("user.dir")
+        val cacheDir = File(runDir, "cache")
+        if (cacheDir.exists().not()) {
+            cacheDir.mkdirs()
+        }
+        val fileName = File(cacheDir, file.absolutePath.toMd5String() + ".jpg")
+        if (fileName.exists()) {
+            return fileName
+        }
+        val params = ArrayList<String>()
+        params.add(ffmpeg)
+        params.add("-i \"${file.absolutePath}\"")
+        params.add("-ss 1")
+        params.add("-f image2")
+        params.add("-an")
+        params.add("-y")
+        params.add("\"${fileName.absolutePath}\"")
+
+        val command = params.joinToString(" ")
+        val process = Runtime.getRuntime().exec(command)
+
+        var line: String?
+        val error = StringBuilder()
+        val reader = process.errorStream.bufferedReader()
+        while (reader.readLine().also { line = it } != null) {
+            error.appendLine(line)
+        }
+
+        if (process.waitFor() != 0) {
+            process.destroy() //0表示正常结束，1：非正常结束
+        } else {
+            process.destroy()
+        }
+
+        if (fileName.exists().not()) {
+            LoggerFactory.getLogger("FFmpeg").error("Create thumbnail failed: ${fileName.absolutePath} , trace = $error")
+        }
+        return fileName
+    } else {
+        return null
+    }
 }
