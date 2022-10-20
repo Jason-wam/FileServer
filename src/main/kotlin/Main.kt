@@ -126,7 +126,7 @@ fun main(args: Array<String>) {
                     put("list", JSONArray().apply {
                         list.forEach { file ->
                             put(JSONObject().apply {
-                                put("name", file.name.ifBlank { file.absolutePath })
+                                put("name", file.absolutePath)
                                 put("length", file.length())
                                 put("isDirectory", file.isDirectory)
                                 put("lastModified", file.lastModified())
@@ -202,6 +202,8 @@ fun main(args: Array<String>) {
                             } else {
                                 true
                             }
+                        }?.sortedByDescending {
+                            it.isDirectory
                         }?.forEach {
                             put(JSONObject().apply {
                                 put("name", it.name)
@@ -335,7 +337,6 @@ private fun createThumbnail(ffmpeg: String, file: File): File? {
         val params = ArrayList<String>()
         params.add(ffmpeg)
         params.add("-i \"${file.absolutePath}\"")
-        params.add("-ss 1")
         params.add("-f image2")
         params.add("-an")
         params.add("-y")
