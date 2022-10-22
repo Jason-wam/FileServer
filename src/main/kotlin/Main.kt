@@ -31,7 +31,7 @@ fun main(args: Array<String>) {
     println("args: ${args.joinToString(" | ")}")
 
     if (args.isNotEmpty()) {
-        //java -jar FileServer.jar -server.port=8080 -server.path=D:/,E:/ -server.pin=123 -ffmpeg=C:/Users/Administrator/Desktop/FileServer/FFmpeg/bin/ffmpeg.exe
+        //java -jar FileServer.jar -server.port=8080 -server.path=D:/,E:/ -server.pin=123 -ffmpeg=D:/FileServer/FFmpeg/bin/ffmpeg.exe
         args.forEach {
             if (it.startsWith("-")) {
                 val arg = it.removePrefix("-").split("=")
