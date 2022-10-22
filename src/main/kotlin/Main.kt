@@ -92,7 +92,6 @@ fun main(args: Array<String>) {
                 }
             }
         }
-
     }
 
     LoggerFactory.getLogger("Server").info("Server address: http://$ipv4:$port/")
