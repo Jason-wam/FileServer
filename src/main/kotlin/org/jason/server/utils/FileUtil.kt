@@ -10,6 +10,4 @@ object FileUtil {
         }
         return directory
     }
-
-
 }
