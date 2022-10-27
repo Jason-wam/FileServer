@@ -3,6 +3,7 @@ import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.*
 import io.ktor.server.plugins.compression.*
 import io.ktor.server.plugins.partialcontent.*
 import io.ktor.server.request.*
@@ -76,7 +77,7 @@ fun main(args: Array<String>) {
         preloadThumbnail(ffmpeg, files)
     }
 
-    val ip = NetworkUtil.getLocalIPAddress()
+    val ip = properties.getProperty("server.ipv4", NetworkUtil.getLocalIPAddress())
     val pin = properties.getProperty("server.pin", "")
     val port = properties.getProperty("server.port", "8080").toInt()
 
