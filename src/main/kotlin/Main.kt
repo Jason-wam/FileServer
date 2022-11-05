@@ -10,7 +10,9 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.netty.handler.codec.http.HttpResponseStatus
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jason.server.respondJson
 import org.jason.server.utils.MediaType
@@ -72,16 +74,16 @@ fun main(args: Array<String>) {
         }
     }
 
-    val ffmpeg = properties.getProperty("ffmpeg", "")
-    if (ffmpeg.isNotBlank()) {
-        preloadThumbnail(ffmpeg, files)
-    }
 
     val ip = properties.getProperty("server.ipv4", NetworkUtil.getLocalIPAddress())
     val pin = properties.getProperty("server.pin", "")
     val port = properties.getProperty("server.port", "8080").toInt()
-
     LoggerFactory.getLogger("Server").info("listener: http://$ip:$port/")
+
+    val ffmpeg = properties.getProperty("ffmpeg", "")
+    if (ffmpeg.isNotBlank()) {
+        preloadThumbnail(ffmpeg, files)
+    }
 
     embeddedServer(Netty, port, "0.0.0.0") {
         install(PartialContent)
@@ -316,39 +318,42 @@ fun main(args: Array<String>) {
 private fun preloadThumbnail(ffmpeg: String, files: List<File>) {
     thread {
         if (files.isNotEmpty()) {
-            LoggerFactory.getLogger("FFmpeg").info("start preload thumbnail..")
-            if (ffmpeg.isNotBlank()) {
-                fun File.getAllFiles(): List<File> {
-                    return ArrayList<File>().apply {
-                        listFiles()?.forEach {
-                            if (it.isDirectory) {
-                                addAll(it.getAllFiles())
-                            } else {
-                                if (MediaType.isVideo(it)) {
-                                    add(it)
-                                }
-                            }
-                        }
-                    }
-                }
+            LoggerFactory.getLogger("FFmpeg").info("Preload thumbnail load start.")
+            ThreadPool.instance("thumbnail").setThreads(5)
 
-                ThreadPool.instance("thumbnail").setThreads(5)
-                ThreadPool.instance("thumbnail").onFinished {
-                    LoggerFactory.getLogger("FFmpeg").info("thumbnail load finished.")
-                }
-
-                files.forEach {
+            files.forEach {
+                if (it.exists()) {
                     if (it.isDirectory) {
                         it.getAllFiles().forEach { file ->
                             ThreadPool.instance("thumbnail").addTask {
+                                LoggerFactory.getLogger("FFmpeg").info("Create thumbnail: ${file.absolutePath}")
                                 createThumbnail(ffmpeg, file)
                             }
                         }
                     } else {
                         ThreadPool.instance("thumbnail").addTask {
+                            LoggerFactory.getLogger("FFmpeg").info("Create thumbnail: ${it.absolutePath}")
                             createThumbnail(ffmpeg, it)
                         }
                     }
+                }
+            }
+
+            ThreadPool.instance("thumbnail").onFinished {
+                LoggerFactory.getLogger("FFmpeg").info("Thumbnail load finished.")
+            }
+        }
+    }
+}
+
+private fun File.getAllFiles(): List<File> {
+    return ArrayList<File>().apply {
+        listFiles()?.forEach {
+            if (it.isDirectory) {
+                addAll(it.getAllFiles())
+            } else {
+                if (MediaType.isVideo(it)) {
+                    add(it)
                 }
             }
         }
@@ -357,43 +362,50 @@ private fun preloadThumbnail(ffmpeg: String, files: List<File>) {
 
 private fun createThumbnail(ffmpeg: String, file: File): File? {
     if (ffmpeg.isNotBlank()) {
-        val runDir = System.getProperty("user.dir")
-        val cacheDir = File(runDir, "cache")
-        if (cacheDir.exists().not()) {
-            cacheDir.mkdirs()
-        }
-        val fileName = File(cacheDir, file.absolutePath.toMd5String() + ".jpg")
-        if (fileName.exists()) {
+        try {
+            val runDir = System.getProperty("user.dir")
+            val cacheDir = File(runDir, "cache")
+            if (cacheDir.exists().not()) {
+                cacheDir.mkdirs()
+            }
+            val fileName = File(cacheDir, file.absolutePath.toMd5String() + ".jpg")
+            if (fileName.exists()) {
+                return fileName
+            }
+            val params = ArrayList<String>()
+            params.add(ffmpeg)
+            params.add("-i \"${file.absolutePath}\"")
+            params.add("-f image2")
+            params.add("-an")
+            params.add("-y")
+            params.add("\"${fileName.absolutePath}\"")
+
+            val command = params.joinToString(" ")
+            val process = Runtime.getRuntime().exec(command)
+
+            var line: String?
+            val error = StringBuilder()
+            val reader = process.errorStream.bufferedReader()
+            while (reader.readLine().also { line = it } != null) {
+                error.appendLine(line)
+            }
+
+            if (process.waitFor() != 0) {
+                process.destroy() //0表示正常结束，1：非正常结束
+            } else {
+                process.destroy()
+            }
+
+            if (fileName.exists().not()) {
+                LoggerFactory.getLogger("FFmpeg").info("Create thumbnail failed: ${fileName.absolutePath} , trace = $error")
+            } else {
+                LoggerFactory.getLogger("FFmpeg").error("Create thumbnail succeed: ${fileName.absolutePath}")
+            }
             return fileName
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
         }
-        val params = ArrayList<String>()
-        params.add(ffmpeg)
-        params.add("-i \"${file.absolutePath}\"")
-        params.add("-f image2")
-        params.add("-an")
-        params.add("-y")
-        params.add("\"${fileName.absolutePath}\"")
-
-        val command = params.joinToString(" ")
-        val process = Runtime.getRuntime().exec(command)
-
-        var line: String?
-        val error = StringBuilder()
-        val reader = process.errorStream.bufferedReader()
-        while (reader.readLine().also { line = it } != null) {
-            error.appendLine(line)
-        }
-
-        if (process.waitFor() != 0) {
-            process.destroy() //0表示正常结束，1：非正常结束
-        } else {
-            process.destroy()
-        }
-
-        if (fileName.exists().not()) {
-            LoggerFactory.getLogger("FFmpeg").error("Create thumbnail failed: ${fileName.absolutePath} , trace = $error")
-        }
-        return fileName
     } else {
         return null
     }
